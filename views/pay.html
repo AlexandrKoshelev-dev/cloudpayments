@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pay</title>
+  </head>
+  <body>
+    <input id="pay" type="hidden" onclick="pay()" />
+    <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
+    <script type="text/javascript">
+      function uuidv4() {
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function (c) {
+            var r = (Math.random() * 16) | 0,
+              v = c == "x" ? r : (r & 0x3) | 0x8
+            return v.toString(16)
+          }
+        )
+      }
+      this.pay = function () {
+        var widget = new cp.CloudPayments()
+        widget.pay(
+          "charge", // или 'charge'
+          {
+            //options
+            publicId: "pk_21d58b563ddcb1496c1885fbeac58", //id из личного кабинета
+            description: "Проверка вашей карты", //назначение
+            amount: 11, //сумма
+            currency: "RUB", //валюта
+            accountId: uuidv4(), //идентификатор плательщика (необязательно)
+            // invoiceId: "1234567", //номер заказа  (необязательно)
+            // email: "user@example.com", //email плательщика (необязательно)
+            skin: "modern", //дизайн виджета (необязательно)
+            data: {
+              myProp: "myProp value",
+            },
+            requireEmail: true,
+          },
+          {
+            onSuccess: function (options) {
+              // success
+              //действие при успешной оплате
+            },
+            onFail: function (reason, options) {
+              // fail
+              //действие при неуспешной оплат
+              window.close()
+            },
+            onComplete: function (paymentResult, options) {
+              //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
+              //например вызов вашей аналитики Facebook Pixel
+            },
+          }
+        )
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const button = document.querySelector("#pay")
+        button.click()
+      })
+    </script>
+  </body>
+</html>
