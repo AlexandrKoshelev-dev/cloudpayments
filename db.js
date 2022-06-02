@@ -11,6 +11,8 @@ const User = sequelize.define(
     userId: DataTypes.INTEGER,
     email: DataTypes.STRING,
     amount: DataTypes.INTEGER,
+    accountId: DataTypes.STRING,
+    token: DataTypes.STRING,
   },
   {
     timestamps: false,

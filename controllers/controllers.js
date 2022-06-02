@@ -1,5 +1,8 @@
 const axios = require("axios")
 
+const Username = "pk_83072be8557ec984878ef058f4f8c"
+const Password = "86523da2b71393dd6b4faee0b541ed31"
+
 const refund = async (TransactionId) => {
   await axios.post(
     "https://api.cloudpayments.ru/payments/refund",
@@ -9,11 +12,31 @@ const refund = async (TransactionId) => {
     },
     {
       auth: {
-        Username: "public_api",
-        Password: "secret_api",
+        Username,
+        Password,
       },
     }
   )
+}
+
+const findSub = async (AccountId) => {
+  try {
+    const res = await axios.post(
+      "https://api.cloudpayments.ru/subscriptions/find",
+      {
+        AccountId,
+      },
+      {
+        auth: {
+          Username,
+          Password,
+        },
+      }
+    )
+    return res.data
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const topup = async (Token, Amount, AccountId) => {
@@ -27,8 +50,8 @@ const topup = async (Token, Amount, AccountId) => {
     },
     {
       auth: {
-        Username: "public_api",
-        Password: "secret_api",
+        Username,
+        Password,
       },
     }
   )
@@ -53,11 +76,11 @@ const create = async (Token, AccountId, Email, Amount) => {
     },
     {
       auth: {
-        Username: "public_api",
-        Password: "secret_api",
+        Username,
+        Password,
       },
     }
   )
 }
 
-module.exports = { refund, topup, create }
+module.exports = { refund, topup, create, findSub }
